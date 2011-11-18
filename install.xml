@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="component" version="1.5.0" method="upgrade">
+	<name>Mojovids</name>
+	<creationDate>2011-11-18</creationDate>
+	<author>Qawelesizwe Mlilo</author>
+	<authorEmail>qawemlilo@gmail.com</authorEmail>
+	<authorUrl>http://qawemlilo.rflab.co.za/</authorUrl>
+	<copyright>(c)2011 - Raging Flame</copyright>
+	<license>(c)2011 - Raging Flame</license>
+	
+	<version>0.1.0</version>
+
+	<description>Mojovids</description>
+	
+	<files folder="site">
+		<filename>mojovids.php</filename>
+		<filename>index.html</filename>
+		<filename>controller.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>js</folder>
+		<folder>css</folder>
+		<folder>images</folder>	
+	</files>
+
+	<administration>
+		<menu>Mojovids</menu>
+
+		<files folder="admin">
+			<filename>mojovids.php</filename>
+			<filename>index.html</filename>
+		</files>  
+	</administration>
+</install>

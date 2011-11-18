@@ -96,6 +96,13 @@ class appForm
 			{  
 			    $folder_url =  JURI::base() . 'components/com_mojovids/orders/' . $folder; //where the files will be save
 			    $this->user['folderurl'] = $folder_url; // add user array for easy database insertion later
+				
+				$this->save(); // save data in session object
+				
+				//$b_ase = JPATH_SITE . DS . 'components' . DS . 'com_mojovids' . DS . 'mailchimp' . DS . 'MCAPI.class.php';
+				//$sub = subscribe($this->user['name'], $this->user['surname'], $this->user['email'], $b_ase);
+				
+				return true;
 			}
 			else 
 			{
@@ -103,26 +110,7 @@ class appForm
 			     $errors['folder'] = 'Folder not created';
 				 $this->session->set('errors', $errors);
 				 return false;
-            }
-			
-		    $savedOk = $this->save(); // save data in session object
-			
-			//if all is good
-			if($savedOk) 
-			{	 
-			    //$b_ase = JPATH_SITE . DS . 'components' . DS . 'com_mojovids' . DS . 'mailchimp' . DS . 'MCAPI.class.php';
-                //$sub = subscribe($this->user['name'], $this->user['surname'], $this->user['email'], $b_ase);	
-               				
-			    $this->user['folderurl'] = $path;
-				return true;
-			}
-			else 
-			{
-			     //Data not saved
-			     $errors['database'] = 'Database error, user information not saved';
-				 $this->session->set('errors', $errors);
-				 return false;
-            }        	   
+            }       	   
 	    } 
 		else 
 		{
@@ -137,7 +125,7 @@ class appForm
 	    $this->session->set('clientname', $this->user['name']);
 		$this->session->set('clientsurname', $this->user['surname']);
 		$this->session->set('clientpackage', $this->user['package']);
-		$this->session->set('clientpackage', $this->user['package']);
+		$this->session->set('folderurl', $this->user['folderurl']);
 		$this->session->set('clientfolder', $this->user['clientfolder']);
 	
 	    return true;

@@ -94,10 +94,6 @@ class appForm
 			
 			if($creat_folder) 
 			{  
-			    $video_folder = JFolder::create($path . DS . 'videos');
-				
-				if($video_folder) $creat_folder = JFolder::create($path . DS . 'photos');
-				
 			    $folder_url =  JURI::base() . 'components/com_mojovids/orders/' . $folder; //where the files will be save
 			    $this->user['folderurl'] = $folder_url; // add user array for easy database insertion later
 			}

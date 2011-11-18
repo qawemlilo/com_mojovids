@@ -8,7 +8,7 @@
 	<copyright>(c)2011 - Raging Flame</copyright>
 	<license>(c)2011 - Raging Flame</license>
 	
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 
 	<description>Mojovids</description>
 	
@@ -21,6 +21,8 @@
 		<folder>js</folder>
 		<folder>css</folder>
 		<folder>images</folder>	
+		<folder>orders</folder>	
+		<folder>swfupload</folder>
 	</files>
 
 	<administration>

@@ -138,14 +138,10 @@ class MojovidsViewSteptwo extends JView
 	{
 	    $session =& JFactory::getSession();
 		
-		//If the user skips step one
-		if (!$session->has('steponecomplete')) {
-		    header("Location: index.php?option=com_mojovids&view=stepone");
-		}		
-		//If the user has already competed this step
+		/**If the user has already competed this step
 		if ($session->has('steptwocomplete')) {
 		    header("Location: index.php?option=com_mojovids&view=stepthree");
-		}
+		}**/
 		
 	    if (isset($_POST['import']))
 		{		    
@@ -156,8 +152,10 @@ class MojovidsViewSteptwo extends JView
 			    $session->set('steptwocomplete', true);
 			    header("Location: index.php?option=com_mojovids&view=stepthree");
 			}
-			else
-			    parent::display($tpl);
+			else {
+			    print_r($session->get('errors'));
+			    //parent::display($tpl);
+			}
 		}
 		else
 		    parent::display($tpl);

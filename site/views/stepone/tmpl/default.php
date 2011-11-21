@@ -10,19 +10,7 @@ $document->addScript('components/com_mojovids/js/tooltips/jquery.tipTip.js');
 $scrit = 'jQuery.noConflict();' . "\n";
 $scrit .= '(function($) {
 $(document).ready(function(){
-   $(".someClass").tipTip({maxWidth: "250px", delay: 200, defaultPosition: "top", edgeOffset: 10});
-   
-   $(".slick, .chooseslick").mouseover(function(){
-       $(".slick").addClass("hovered");
-   }).mouseout(function(){
-       $(".slick").removeClass("hovered");
-   });
-   
-   $(".sexy, .choosesexy").mouseover(function(){
-       $(".sexy").addClass("hovered");
-   }).mouseout(function(){
-       $(".sexy").removeClass("hovered");
-   });    
+   $(".someClass").tipTip({maxWidth: "250px", delay: 200, defaultPosition: "top", edgeOffset: 10});    
 });
 })(jQuery);';
 
@@ -37,7 +25,7 @@ $document->addScriptDeclaration($scrit);
       <table id="prices">
 		  <thead>
             <tr>
- 			  <th>Pricing options</th>
+ 			  <th class="first">Pricing options</th>
               <th class="slick">
 			    Economy <br />  <br />
                 $79			   
@@ -81,6 +69,18 @@ $document->addScriptDeclaration($scrit);
 		    </tr>
 			
             <tr>
+ 			  <td class="optitem">File Format</td>
+              <td class="slick"> MP4 </td>
+              <td class="sexy"> MP4 </td>
+		    </tr>
+			
+            <tr>
+ 			  <td class="optitem">ISO File</td>
+              <td class="slick"> <img src="components/com_mojovids/images/no_32.png" class="yes" /> </td>
+              <td class="sexy"> <img src="components/com_mojovids/images/yes_32.png" class="yes" /> <span class="details"><br />(ISO files are 100% DVD ready and simply need to be burnt to disc)</span> </td>
+		    </tr>
+			<!--
+            <tr>
  			  <td class="optitem">Branding/Advertising</td>
               <td class="slick"> Mojovids watermark <br />
                    <span class="details">(Our logo will appear in the corner of your slideshow)</span>
@@ -89,14 +89,14 @@ $document->addScriptDeclaration($scrit);
 			      No branding/white label <br />
 				  <span class="details">(Your slideshow will not have any form of branding or advertising)</span>
 			  </td>
-		    </tr>
+		    </tr> -->
 		  </tbody>
 	
 		  <tfoot>
             <tr>			  
- 			  <td> &nbsp; </td>
-              <td class="chooseslick"> <input type="submit" value="CHOOSE" name="economy" class="button green"/> </td>
-              <td class="choosesexy"> <input type="submit" value="CHOOSE" name="premium" class="button green"/></td>			  
+ 			  <td style="text-align: left"> <span class="req">*</span> <a href="#/moreinfo" class="someClass" style="color: #000; font-size: 12px; font-weight: bold" title="Both packages are delivered in MP4 format and both are of equal quality. Our premium package simply comes with the additional ISO file that is ready to be burnt straight to DVD disc. This takes away the hassle of trying to convert your MP4 file to a DVD ready format">>File format clarification</a> </td>
+              <td class="chooseslick"> <input type="submit" value="Proceed" name="economy" class="button green"/> </td>
+              <td class="choosesexy"> <input type="submit" value="Proceed" name="premium" class="button green"/></td>			  
 		    </tr>
 		  </tfoot>
       </table>

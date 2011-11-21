@@ -95,8 +95,8 @@ $document->addScriptDeclaration($scrit);
 		  <tfoot>
             <tr>			  
  			  <td style="text-align: left"> <span class="req">*</span> <a href="#/moreinfo" class="someClass" style="color: #000; font-size: 12px; font-weight: bold" title="Both packages are delivered in MP4 format and both are of equal quality. Our premium package simply comes with the additional ISO file that is ready to be burnt straight to DVD disc. This takes away the hassle of trying to convert your MP4 file to a DVD ready format">>File format clarification</a> </td>
-              <td class="chooseslick"> <input type="submit" value="Proceed" name="economy" class="button green"/> </td>
-              <td class="choosesexy"> <input type="submit" value="Proceed" name="premium" class="button green"/></td>			  
+              <td class="chooseslick"> <input type="submit" value="PROCEED" name="economy" class="button green"/> </td>
+              <td class="choosesexy"> <input type="submit" value="PROCEED" name="premium" class="button green"/></td>			  
 		    </tr>
 		  </tfoot>
       </table>

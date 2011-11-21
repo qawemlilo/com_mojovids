@@ -1,0 +1,12 @@
+Mojo Vids
+
+Mojo Vids is a joomla component for uploading images and video clips to be used in creating a slide show.
+
+The client required the following;
+
+ 1. A table for comparing packages
+ 2. A form for collecting user details
+ 3. An auto-responder that collects and uses the above information
+ 4. A user friendly multiple-file uploader which limits how much a user can upload.
+ 5. Database that logs all orders
+ 6. Paypal intergration for payment.

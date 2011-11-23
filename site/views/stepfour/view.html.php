@@ -17,6 +17,9 @@ class appForm {
 	{
 	    $music = JRequest::getString('music', '', 'POST');
 		
+		if(empty($music))
+		    $music = JRequest::getString('musictwo', '', 'POST');
+		
 		if(!empty($music))
 		{
 		    $name = $this->session->get('clientname');
@@ -24,20 +27,28 @@ class appForm {
 			$email = $this->session->get('clientemail');
 			$package = $this->session->get('clientpackage');
 			$folder = $this->session->get('clientfolder');
+			$base = JURI::base();
 			
-			$body = "New order from website";
+			$body = "NEW ORDER FROM WEBSITE";
             $body .= "\n---------------------------------------------------";			
-            $body .= "\n Name: \t " . $name;	
-            $body .= "\n Username: \t " . $surname;	
-			$body .= "\n Email: \t " . $email;
+            $body .= "\n Name: " . $name;	
+            $body .= "\n Username: " . $surname;	
+			$body .= "\n Email: " . $email;
+			$body .= "\n Package: " . $package;
+			$body .= "\n Music: " . $music;
+			/*
+			if(!empty($comments))
+			{
+			    $body .= "\n Notes: " . $comments;
+			}*/
             $body .= "\n---------------------------------------------------";
-            $body .= "\n\nPlease go to http://demos.rflab.co.za/index.php?option=com_mojovids&view=download&f={$folder}/ to download files.";			
+            $body .= "\n\nPlease go to {$base}index.php?option=com_mojovids&view=download&f={$folder} to download files.";			
 			
 			$savedOk = $this->save($name, $surname, $email, $package, $folder, $music);
 			
 			if($savedOk) 
 			{
-			    $this->sendMail("no-reply@mojo.co.za", "qawemlilo@gmail.com", "New order from website", $body);
+			    $this->sendMail("auto-responder@mojo.co.za", "info@scottwebdesigns.co.za", "New order from website", $body);
 				
 				return true;
 			}
@@ -82,14 +93,29 @@ class appForm {
 class MojovidsViewStepfour extends JView
 {
 	function display($tpl = null)
-	{ 
+	{
+       $session =& JFactory::getSession();	
 	    if (isset($_POST['import']))
 		{
 		    $form = new appForm();
 			$formOk = $form->processForm();
 			
-			if($formOk) die("Success!");
-			else die("Fail!");
+			if($formOk) 
+			{
+			    $session->destroy();
+				$msg = "success";
+			    $this->assignRef( 'msg', $msg);
+			}
+			else
+			{
+			    $msg = "fail";
+			    $this->assignRef( 'msg', $msg);
+			}
+		}
+		else 
+		{
+		    $msg = "default";
+		    $this->assignRef('msg', $msg);
 		}
 		parent::display($tpl);
 	}

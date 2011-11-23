@@ -1,6 +1,8 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
+
+if($this->msg == "default") {
 $session = &JFactory::getSession();
 $document = &JFactory::getDocument();
 $host = JURI::root();
@@ -23,9 +25,16 @@ $scrit .= '(function($) {
 $(document).ready(function(){
     $(".someClass").tipTip({maxWidth: "250px", delay: 200, defaultPosition: "top", edgeOffset: 10}); 
 
-    $("#conditions").click(function(){
+    $("#musictwo").click(function(){
 	    ($("#music").attr("disabled")) ? $("#music").removeAttr("disabled") : $("#music").attr("disabled", "disabled");
-    });		
+    });	
+
+    $("#form1").submit(function(){
+	    if(!$("#musictwo").attr("checked") && !$("#music").val()) {
+		    alert("Please select music option");
+			return false;
+		}
+    });	
 });
 })(jQuery);';
 
@@ -112,13 +121,26 @@ $document->addScriptDeclaration($scrit);
 		  <option value="Rock">Rock</option>		  
 		</select>
 		
-		or <input type="checkbox" id="conditions" value="Leave it to us" name="conditions" />Leave it to us <a href="#/moreinfo" class="someClass" title="We will use our experience to find the right song for your Mojovids slideshow"> >more info</a>
+		or <input type="checkbox" id="musictwo" value="Decide for me" name="musictwo" />Leave it to us <a href="#/moreinfo" class="someClass" title="We will use our experience to find the right song for your Mojovids slideshow"> more info</a>
 	  </p>	
+	
        <div style="height:2px; width: 100%; clear: left;"> &nbsp; </div>	
         <input type="hidden" value="1" name="import"> 	   
         <button type="submit" value="submit" class="button green" id="submit" name="submit"><strong>Paypal Payment >></strong></button>
 	    </fieldset>
 	</form>
 </div>
-
-
+<?php
+}
+elseif($this->msg == "success")
+{
+    echo '<h2 style="color:green">Success! (Demo: user will hereby be redirected to paypal)</h2>';          
+}
+elseif($this->msg == "fail")
+{
+    echo '<h2 style="color:red">Error occured: (Demo failure)</h2>';    
+}
+else {
+    header("Location: index.php");
+}
+?>

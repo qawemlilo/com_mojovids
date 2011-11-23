@@ -1,8 +1,13 @@
-Mojo Vids
+/*
+**********************************************************
+Extension Name: Mojo Vids
+Author: Qawelesizwe Mlilo
+Email: qawemlilo@gmail.com
+Description: Mojo Vids is a joomla component for uploading images and video clips to be used in creating a slide show.
+**********************************************************
+*/
 
-Mojo Vids is a joomla component for uploading images and video clips to be used in creating a slide show.
-
-The client required the following;
+The client required the following.
 
  1. A table for comparing packages
  2. A form for collecting user details

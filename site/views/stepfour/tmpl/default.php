@@ -79,7 +79,7 @@ $document->addScriptDeclaration($scrit);
 		};
 </script>
 	<h2>Step 3 - Videos Clips</h2>
-	<form id="form1" action="index.php" method="post" enctype="multipart/form-data">
+	<form id="form1" action="index.php?option=com_mojovids&view=stepfour" method="post" enctype="multipart/form-data">
 	 <fieldset>
 	  <legend>Upload Video Clips</legend>
 	       <p style="margin-top: 0px"><span class="req">*Please Note: you can add multiple file at once, by holding down the shift button while selecting multiple items to be uploaded.</span></p>
@@ -114,7 +114,8 @@ $document->addScriptDeclaration($scrit);
 		
 		or <input type="checkbox" id="conditions" value="Leave it to us" name="conditions" />Leave it to us <a href="#/moreinfo" class="someClass" title="We will use our experience to find the right song for your Mojovids slideshow"> >more info</a>
 	  </p>	
-       <div style="height:2px; width: 100%; clear: left;"> &nbsp; </div>	  
+       <div style="height:2px; width: 100%; clear: left;"> &nbsp; </div>	
+        <input type="hidden" value="1" name="import"> 	   
         <button type="submit" value="submit" class="button green" id="submit" name="submit"><strong>Paypal Payment >></strong></button>
 	    </fieldset>
 	</form>

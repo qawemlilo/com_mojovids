@@ -124,6 +124,7 @@ class appForm
 	{
 	    $this->session->set('clientname', $this->user['name']);
 		$this->session->set('clientsurname', $this->user['surname']);
+		$this->session->set('clientemail', $this->user['email']);
 		$this->session->set('clientpackage', $this->user['package']);
 		$this->session->set('folderurl', $this->user['folderurl']);
 		$this->session->set('clientfolder', $this->user['clientfolder']);

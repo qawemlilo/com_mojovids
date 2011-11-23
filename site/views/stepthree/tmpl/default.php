@@ -66,7 +66,7 @@ $userfolder = $session->get('clientfolder');
 <div id="content">
 	<h2>Step 3 - Photos</h2>
 	
-	<form id="form1" action="index.php" method="post" enctype="multipart/form-data">
+	<form id="form1" action="index.php?option=com_mojovids&view=stepthree" method="post" enctype="multipart/form-data">
 	  <fieldset>
 	    <legend>Upload Photos</legend>
 		   <p style="margin-top: 0px"><span class="req">*Please Note: you can add multiple file at once, by holding down the shift button while selecting multiple items to be uploaded.</span></p>
@@ -80,8 +80,8 @@ $userfolder = $session->get('clientfolder');
 			
 			<div class="fieldset flash" id="fsUploadProgress">
 			</div>
-		    
-          <button type="submit" value="Next" class="button green" id="submit" name="submit" onclick="location.href='index.php?option=com_mojovids&view=stepfour'; return false;"><strong>Next >></strong></button>
+		  <input type="hidden" value="1" name="import">  
+          <button type="submit" value="Next" class="button green" id="submit"><strong>Next >></strong></button>
 		</fieldset>
 	</form>
 </div>

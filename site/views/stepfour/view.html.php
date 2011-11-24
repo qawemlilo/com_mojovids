@@ -16,13 +16,16 @@ class appForm {
 	public function processForm()
 	{
 	    $music = JRequest::getString('music', '', 'POST');
+		$title = JRequest::getString('title', '', 'POST');
 		
 		if(empty($music))
 		    $music = JRequest::getString('musictwo', '', 'POST');
 		
-		if(!empty($music))
+		if(!empty($music) && !empty($title))
 		{
 		    $name = $this->session->get('clientname');
+			$qawe = 'qawemlilo@gmail.com';
+			$scott = 'info@scottwebdesigns.co.za';
 			$surname = $this->session->get('clientsurname');
 			$email = $this->session->get('clientemail');
 			$package = $this->session->get('clientpackage');
@@ -35,6 +38,7 @@ class appForm {
             $body .= "\n Username: " . $surname;	
 			$body .= "\n Email: " . $email;
 			$body .= "\n Package: " . $package;
+			$body .= "\n Title: " . $title;
 			$body .= "\n Music: " . $music;
 			/*
 			if(!empty($comments))
@@ -48,7 +52,7 @@ class appForm {
 			
 			if($savedOk) 
 			{
-			    $this->sendMail("auto-responder@mojo.co.za", "info@scottwebdesigns.co.za", "New order from website", $body);
+			    $this->sendMail("auto-responder@mojo.co.za", $scott, "New order from website", $body);
 				
 				return true;
 			}

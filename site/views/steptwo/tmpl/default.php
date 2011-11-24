@@ -2,6 +2,8 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 $document = &JFactory::getDocument();
+$session =& JFactory::getSession();
+
 $document->addStyleSheet('components/com_mojovids/css/style.css');
 $document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
 
@@ -13,13 +15,24 @@ $(document).ready(function(){
 		    alert("You have to accept the Terms and Conditions to proceed");
 			return false;
 		}
-	});    
+	});
+
+    $(".txt").focus(function(){
+	    $(this).removeClass("error");
+    });	
 });
 })(jQuery);';
 
 $document->addScriptDeclaration($scrit);
-$session =& JFactory::getSession();
-$errors = $session->get('errors');
+
+if( $session->has('errors'))
+{
+     $errors = $session->get('errors');
+}
+else 
+{
+    $errors = array();
+}
 ?>
 <!-- Our form -->
 
@@ -32,17 +45,17 @@ $errors = $session->get('errors');
 	  <p>
 	    <input type="hidden" value="1" name="import">
 	    <label for="name"> Name <span class="req">*</span></label>
-		<input type="text" id="n_error" class="txt" size="22" value="" name="name">
+		<input type="text" class="txt<?php if(isset($errors['name'])) echo ' error'; ?>" size="22" value="<?php if($session->has('clientname')) echo $session->get('clientname'); ?>" name="name">
 	  </p>
 	  
 	  <p>
 	    <label for="surname">Surname <span class="req">*</span></label>
-		<input type="text" id="n_error" class="txt" size="22" value="" name="surname">
+		<input type="text" class="txt<?php if(isset($errors['surname'])) echo ' error'; ?>" size="22" value="<?php if($session->has('clientsurname')) echo $session->get('clientsurname'); ?>" name="surname">
 	  </p>
 	  
 	  <p>
 	    <label for="email">Email <span class="req">*</span></label>
-		<input type="text" id="e_error" class="txt" size="22" value="" name="email" />
+		<input type="text" class="txt<?php if(isset($errors['email'])) echo ' error'; ?>" size="22" value="<?php if($session->has('clientemail')) echo $session->get('clientemail'); ?>" name="email" />
 	  </p>
 	  
 	  <p>

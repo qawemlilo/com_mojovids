@@ -153,12 +153,7 @@ class MojovidsViewSteptwo extends JView
 			    $session->set('steptwocomplete', true);
 			    header("Location: index.php?option=com_mojovids&view=stepthree");
 			}
-			else {
-			    print_r($session->get('errors'));
-			    //parent::display($tpl);
-			}
 		}
-		else
-		    parent::display($tpl);
+		parent::display($tpl);
 	}
 }

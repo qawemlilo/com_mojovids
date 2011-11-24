@@ -27,11 +27,11 @@ $document->addScriptDeclaration($scrit);
             <tr>
  			  <th class="first">Pricing options</th>
               <th class="slick">
-			    Economy <br />  <br />
+			   <img src="components/com_mojovids/images/economy-button.jpg" /> <br />  <br />
                 $79			   
               </th>
               <th class="sexy">
-			   Premiun <br /> <br />  
+			   <img src="components/com_mojovids/images/premium-button.jpg" /> <br /> <br />  
                $99			   
               </th>
 		    </tr>

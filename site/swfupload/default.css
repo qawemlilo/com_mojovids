@@ -96,7 +96,7 @@ label {
 
 /* -- Table Styles ------------------------------- */
 td {
-	font: 10pt Helvetica, Arial, sans-serif;
+	/* font: 10pt Helvetica, Arial, sans-serif; */
 	vertical-align: top;
 }
 

@@ -11,12 +11,37 @@ The FileProgress class is not part of SWFUpload.
    package.  They are part of my application.  Without these none
    of the actions SWFUpload makes will show up in my application.
    ********************** */
+   
+var fUload = {
+    num_imgs: 0,
+	loaded: 0,
+	queued: 0,
+	broken: 0,
+
+    setStatus: function (target, status) {
+        $('#'+target).html(status);
+		
+		if ($('#'+target))
+		    return true;
+		else
+		 return false;
+    },	
+	
+    setStatus: function (target, status) {
+        document.getElementById(target).innerHTML = status;
+    },
+	
+    setStats: function (num) {
+        if (this.num_imgs)
+		    return;
+		else
+		    this.num_imgs = num;
+    }
+};
+
 function fileQueued(file) {
 	try {
-		var progress = new FileProgress(file, this.customSettings.progressTarget);
-		progress.setStatus("Pending...");
-		progress.toggleCancel(true, this);
-
+		fUload.queued = fUload.queued += 1;
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -30,26 +55,22 @@ function fileQueueError(file, errorCode, message) {
 			return;
 		}
 
-		var progress = new FileProgress(file, this.customSettings.progressTarget);
-		progress.setError();
-		progress.toggleCancel(false);
-
 		switch (errorCode) {
 		case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
-			progress.setStatus("File is too big.");
+			fUload.setStatus(this.customSettings.statusTarget, "File is too big.");
 			this.debug("Error Code: File too big, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
-			progress.setStatus("Cannot upload Zero Byte files.");
+			fUload.setStatus(this.customSettings.statusTarget, "Cannot upload Zero Byte files.");
 			this.debug("Error Code: Zero byte file, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
-			progress.setStatus("Invalid File Type.");
+			fUload.setStatus(this.customSettings.statusTarget, "Invalid File Type.");
 			this.debug("Error Code: Invalid File Type, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		default:
 			if (file !== null) {
-				progress.setStatus("Unhandled Error");
+				fUload.setStatus(this.customSettings.statusTarget, "Unhandled Error");
 			}
 			this.debug("Error Code: " + errorCode + ", File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
@@ -62,7 +83,7 @@ function fileQueueError(file, errorCode, message) {
 function fileDialogComplete(numFilesSelected, numFilesQueued) {
 	try {
 		if (numFilesSelected > 0) {
-			document.getElementById(this.customSettings.cancelButtonId).disabled = false;
+            fUload.setStats(this.customSettings.totalTarget, numFilesQueued);
 		}
 		
 		/* I want auto start the upload and I can do that here */
@@ -79,9 +100,8 @@ function uploadStart(file) {
 		It's important to update the UI here because in Linux no uploadProgress events are called. The best
 		we can do is say we are uploading.
 		 */
-		var progress = new FileProgress(file, this.customSettings.progressTarget);
-		progress.setStatus("Uploading...");
-		progress.toggleCancel(true, this);
+		fUload.setStatus(this.customSettings.statusTarget, file.name);
+		document.getElementById(this.customSettings.singleFileProgressTarget).style.width =  "1%";
 	}
 	catch (ex) {}
 	
@@ -90,11 +110,8 @@ function uploadStart(file) {
 
 function uploadProgress(file, bytesLoaded, bytesTotal) {
 	try {
-		var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
-
-		var progress = new FileProgress(file, this.customSettings.progressTarget);
-		progress.setProgress(percent);
-		progress.setStatus("Uploading...");
+		var percent = Math.ceil((bytesLoaded / bytesTotal) * 100),
+		document.getElementById(this.customSettings.singleFileProgressTarget).style.width =  percent + "%";
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -102,11 +119,9 @@ function uploadProgress(file, bytesLoaded, bytesTotal) {
 
 function uploadSuccess(file, serverData) {
 	try {
-		var progress = new FileProgress(file, this.customSettings.progressTarget);
-		progress.setComplete();
-		progress.setStatus("Complete.");
-		progress.toggleCancel(false); //Qawe edit progress.toggleCancel(false);
-
+	    fUload.loaded = fUload.loaded += 1;
+		fUload.setStatus(this.customSettings.statusTarget, "");
+		document.getElementById(this.customSettings.singleFileProgressTarget).style.width =  "0%";
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -114,33 +129,29 @@ function uploadSuccess(file, serverData) {
 
 function uploadError(file, errorCode, message) {
 	try {
-		var progress = new FileProgress(file, this.customSettings.progressTarget);
-		progress.setError();
-		progress.toggleCancel(false);
-
 		switch (errorCode) {
 		case SWFUpload.UPLOAD_ERROR.HTTP_ERROR:
-			progress.setStatus("Upload Error: " + message);
+			fUload.setStatus(this.customSettings.statusTarget, "Upload Error: " + message);
 			this.debug("Error Code: HTTP Error, File name: " + file.name + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.UPLOAD_FAILED:
-			progress.setStatus("Upload Failed.");
+			fUload.setStatus(this.customSettings.statusTarget, "Upload Failed.");
 			this.debug("Error Code: Upload Failed, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.IO_ERROR:
-			progress.setStatus("Server (IO) Error");
+			fUload.setStatus(this.customSettings.statusTarget, "Server (IO) Error");
 			this.debug("Error Code: IO Error, File name: " + file.name + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.SECURITY_ERROR:
-			progress.setStatus("Security Error");
+			fUload.setStatus(this.customSettings.statusTarget, "Security Error");
 			this.debug("Error Code: Security Error, File name: " + file.name + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.UPLOAD_LIMIT_EXCEEDED:
-			progress.setStatus("Upload limit exceeded.");
+			fUload.setStatus(this.customSettings.statusTarget, "Upload limit exceeded.");
 			this.debug("Error Code: Upload Limit Exceeded, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.FILE_VALIDATION_FAILED:
-			progress.setStatus("Failed Validation.  Upload skipped.");
+			fUload.setStatus(this.customSettings.statusTarget, "Failed Validation.  Upload skipped.");
 			this.debug("Error Code: File Validation Failed, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.UPLOAD_ERROR.FILE_CANCELLED:
@@ -148,14 +159,13 @@ function uploadError(file, errorCode, message) {
 			if (this.getStats().files_queued === 0) {
 				document.getElementById(this.customSettings.cancelButtonId).disabled = true;
 			}
-			progress.setStatus("Cancelled");
-			progress.setCancelled();
+			fUload.setStatus(this.customSettings.statusTarget, "Cancelled");
 			break;
 		case SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED:
-			progress.setStatus("Stopped");
+			fUload.setStatus(this.customSettings.statusTarget, "Stopped");
 			break;
 		default:
-			progress.setStatus("Unhandled Error: " + errorCode);
+			fUload.setStatus(this.customSettings.statusTarget, "Unhandled Error: " + errorCode);
 			this.debug("Error Code: " + errorCode + ", File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		}

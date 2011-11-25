@@ -42,7 +42,10 @@ $userfolder = $session->get('clientfolder');
 				file_queue_limit : 0,
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
-					cancelButtonId : "btnCancel"
+					singleFileProgressTarget : "sfpTarget",
+					statusTarget: "sTarget",
+					cancelButtonId : "btnCancel",
+					totalTarget: "tTarget",
 				},
 				debug: false,
 

@@ -19,6 +19,7 @@ $document->addScript('components/com_mojovids/js/tooltips/jquery.tipTip.js');
 
 $userfolder = $session->get('clientfolder');
 
+//Some custom styles
 $style = '	
   .swfupload {
      position: absolute;
@@ -29,9 +30,11 @@ $style = '
      opacity: 0.0;
 	 z-index: 1;
   }';
-
+//Add some custom styles
 $document->addStyleDeclaration($style); 
 
+
+//Some custom script
 $scrit = 'jQuery.noConflict();' . "\n";
 $scrit .= '(function($) {
 $(document).ready(function(){
@@ -42,18 +45,18 @@ $(document).ready(function(){
     });	
 
     $("#form1").submit(function(){
-	    if(!$("#musictwo").attr("checked") && !$("#music").val()) {
-		    alert("Please select music option");
+	    if(!$("#title").val()) {
+		    alert("Please enter the title for your Slideshow");
 			return false;
 		}
-	    if(!$("#title").val()) {
-		    alert("Please enter the title for your Slide");
+	    if(!$("#musictwo").attr("checked") && !$("#music").val()) {
+		    alert("Please select music option");
 			return false;
 		}
     });	
 });
 })(jQuery);';
-
+//Add some custom script
 $document->addScriptDeclaration($scrit);
 ?>
 <script type="text/javascript">
@@ -123,7 +126,7 @@ $document->addScriptDeclaration($scrit);
 			</div> 
 			
 	  <p style="margin: 5px; margin-top: 10px">
-	    <label for="title">Slide Title:<span class="req">*</span></label>
+	    <label for="title">Slideshow Title:<span class="req">*</span></label>
 		<input type="text" id="title" class="txt" size="22" value="" name="title">
 	  </p>				
 	  <p style="margin: 5px;">

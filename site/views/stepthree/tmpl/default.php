@@ -33,13 +33,16 @@ $userfolder = $session->get('clientfolder');
 			var settings = {
 				flash_url : "<?php echo $host . 'components/com_mojovids/swfupload/swfupload.swf';?>",
 				upload_url: "<?php echo $host . 'components/com_mojovids/swfupload/upload.php'; ?>",
-				post_params: {"PHPSESSID" : "<?php echo $session->getId(); ?>", "userfolder": "<?php echo $userfolder; ?>", "host": "<?php echo $host; ?>"},
-				file_size_limit : "100 MB",
-				//file_types : "*.*",
-				file_types : "*.png;*.jpg;*jpeg;*.gif",
-				file_types_description : "All Files",
-				file_upload_limit : 301,
-				file_queue_limit : 0,
+				post_params: {
+				    "PHPSESSID" : "<?php echo $session->getId(); ?>", 
+					"userfolder": "<?php echo $userfolder; ?>", 
+					"host": "<?php echo $host; ?>"
+				},
+				file_size_limit : "1 MB",  //size limit per file
+				file_types : "*.png;*.jpg;*jpeg;*.gif", // acceptable file extensions
+				file_types_description : "Image files only", //discription message
+				file_upload_limit : 5, //number of files to be uploaded
+				file_queue_limit : 0, //number of files uploaded per time
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
 					mainTarget : "mainTarget",

@@ -12,7 +12,6 @@ $document->addStyleSheet('components/com_mojovids/swfupload/default.css');
 $document->addStyleSheet('components/com_mojovids/js/tooltips/tipTip.css');
 $document->addScript('components/com_mojovids/swfupload/swfupload.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.queue.js');
-$document->addScript('components/com_mojovids/swfupload/fileprogress.js');
 $document->addScript('components/com_mojovids/swfupload/handlers.js');
 $document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
 $document->addScript('components/com_mojovids/js/tooltips/jquery.tipTip.js');
@@ -68,14 +67,18 @@ $document->addScriptDeclaration($scrit);
 				flash_url : "<?php echo $host . 'components/com_mojovids/swfupload/swfupload.swf';?>",
 				upload_url: "<?php echo $host . 'components/com_mojovids/swfupload/upload.php'; ?>",
 				post_params: {"PHPSESSID" : "<?php echo $session->getId(); ?>", "userfolder":"<?php echo $userfolder; ?>", "host": "<?php echo $host; ?>"},
-				file_size_limit : "10 MB",
-				file_types : "*.*",
+				file_size_limit : "50 MB",
+				file_types : "*.mp3;*.mp4;*.wav;*mpeg;*.wmv;*.avi;*.flv;*.wmv",
 				file_types_description : "All Files",
-				file_upload_limit : 5,
+				file_upload_limit : 0,
 				file_queue_limit : 0,
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
-					cancelButtonId : "btnCancel"
+					mainTarget : "mainTarget",
+					statusTarget: "sTarget",
+					cancelButtonId : "btnCancel",
+					totalTarget: "tTarget",
+					loadedTarget: "loaded"
 				},
 				debug: false,
 
@@ -111,25 +114,29 @@ $document->addScriptDeclaration($scrit);
 	<form id="form1" action="index.php?option=com_mojovids&view=stepfour" method="post" enctype="multipart/form-data">
 	 <fieldset>
 	  <legend>Upload Video Clips</legend>
-	       <p style="margin-top: 0px; padding-left: 6px;"><strong>Please Note:</strong> You can add multiple file at once, by holding down the shift button while selecting multiple items to be uploaded.</p>
-
-			<div style="margin-left: 2px; margin-top: 10px;">
+		   <p style="margin-top: 0px; padding-left: 0px;"><strong>Please Note:</strong> You can add multiple files at once, by holding down the shift button while selecting multiple items to be uploaded.</p>
+			<div style="margin-left: -2px; margin-top: 10px;">
 				<span id="spanButtonPlaceHolder"></span>
-				<input id="btnUpload" type="button" value="Upload" class="button green" style="font-weight:bold; border-color:green" />
+				<input id="btnUpload" type="button" value="Upload" class="button green" style="font-weight:bold;  border-color:green" />
 				<input id="btnCancel" type="button" class="button orange" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="border-color:orange; font-weight:bold; margin-left: 2px;" />
 			</div>
 			
-			<div id="divStatus" style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px">0 Files Uploaded</div>
+			<div id="divStatus" style="margin-left: 2px; margin-top: 10px; color: #000"><span id="loaded">0</span> of <span id="tTarget">0</span> Files Uploaded</div>
 			
 			<div class="fieldset flash" id="fsUploadProgress">
-
-			</div> 
+			    <div id="mainTarget" style="background: green; width: 0%; height:20px;">
+				</div>
+			</div>
 			
-	  <p style="margin: 5px; margin-top: 10px">
+			<div id="sTarget" style="width: 375px; height:20px; margin-bottom: 15px; padding-left: 2px; overflow: hidden; color: #7DD006">
+            &nbsp;
+			</div>
+			
+	  <p style="margin: 5px 5px 5px 0px;">
 	    <label for="title">Slideshow Title:<span class="req">*</span></label>
 		<input type="text" id="title" class="txt" size="22" value="" name="title">
 	  </p>				
-	  <p style="margin: 5px;">
+	  <p style="margin: 5px 5px 5px 0px;">
 	    <label for="music">Music category:<span class="req">*</span></label>
 		<select name="music" id="music">
 		  <option value="">Choose Category</option>

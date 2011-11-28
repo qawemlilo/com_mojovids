@@ -10,7 +10,6 @@ $document->addStyleSheet('components/com_mojovids/css/style.css');
 $document->addStyleSheet('components/com_mojovids/swfupload/default.css');
 $document->addScript('components/com_mojovids/swfupload/swfupload.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.queue.js');
-$document->addScript('components/com_mojovids/swfupload/fileprogress.js');
 $document->addScript('components/com_mojovids/swfupload/handlers.js');
 
 $style = '	
@@ -36,16 +35,18 @@ $userfolder = $session->get('clientfolder');
 				upload_url: "<?php echo $host . 'components/com_mojovids/swfupload/upload.php'; ?>",
 				post_params: {"PHPSESSID" : "<?php echo $session->getId(); ?>", "userfolder": "<?php echo $userfolder; ?>", "host": "<?php echo $host; ?>"},
 				file_size_limit : "100 MB",
-				file_types : "*.*",
+				//file_types : "*.*",
+				file_types : "*.png;*.jpg;*jpeg;*.gif",
 				file_types_description : "All Files",
-				file_upload_limit : 300,
+				file_upload_limit : 301,
 				file_queue_limit : 0,
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
-					singleFileProgressTarget : "sfpTarget",
+					mainTarget : "mainTarget",
 					statusTarget: "sTarget",
 					cancelButtonId : "btnCancel",
 					totalTarget: "tTarget",
+					loadedTarget: "loaded"
 				},
 				debug: false,
 
@@ -85,17 +86,24 @@ $userfolder = $session->get('clientfolder');
 	<form id="form1" action="index.php?option=com_mojovids&view=stepthree" method="post" enctype="multipart/form-data">
 	  <fieldset>
 	    <legend>Upload Photos</legend>
-		   <p style="margin-top: 0px; padding-left: 6px;"><strong>Please Note:</strong> You can add multiple file at once, by holding down the shift button while selecting multiple items to be uploaded.</p>
-			<div style="margin-left: 2px; margin-top: 10px;">
+		   <p style="margin-top: 0px; padding-left: 0px;"><strong>Please Note:</strong> You can add multiple files at once, by holding down the shift button while selecting multiple items to be uploaded.</p>
+			<div style="margin-left: -2px; margin-top: 10px;">
 				<span id="spanButtonPlaceHolder"></span>
 				<input id="btnUpload" type="button" value="Upload" class="button green" style="font-weight:bold;  border-color:green" />
 				<input id="btnCancel" type="button" class="button orange" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="border-color:orange; font-weight:bold; margin-left: 2px;" />
 			</div>
 			
-			<div id="divStatus" style="margin-left: 10px; margin-top: 5px; margin-bottom: 5px">0 Files Uploaded</div>
+			<div id="divStatus" style="margin-left: 2px; margin-top: 10px; color: #000"><span id="loaded">0</span> of <span id="tTarget">0</span> Files Uploaded</div>
 			
 			<div class="fieldset flash" id="fsUploadProgress">
+			    <div id="mainTarget" style="background: green; width: 0%; height:20px;">
+				</div>
 			</div>
+			
+			<div id="sTarget" style="width: 375px; height:20px; margin-bottom: 15px; padding-left: 2px; overflow: hidden; color: #7DD006">
+            &nbsp;
+			</div>
+			
 		  <input type="hidden" value="1" name="import">  
           <button type="submit" value="Next" class="button green" id="submit"><strong>Next >></strong></button>
 		</fieldset>

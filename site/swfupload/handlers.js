@@ -4,6 +4,7 @@ The FileProgress class is not part of SWFUpload.
 
 
 /* **********************
+   Q's notes
    Event Handlers
    These are my custom event handlers to make my
    web application behave the way I went when SWFUpload
@@ -16,16 +17,8 @@ var fUload = {
     num_imgs: 0,
 	loaded: 0,
 	queued: 0,
-	broken: 0,
-
-    setStatus: function (target, status) {
-        $('#'+target).html(status);
-		
-		if ($('#'+target))
-		    return true;
-		else
-		 return false;
-    },	
+	broken: 0,	
+	limit: 0,
 	
     setStatus: function (target, status) {
         document.getElementById(target).innerHTML = status;
@@ -33,7 +26,7 @@ var fUload = {
 	
     setStats: function (num) {
         if (this.num_imgs)
-		    return;
+		    this.num_imgs += num;
 		else
 		    this.num_imgs = num;
     }
@@ -83,7 +76,10 @@ function fileQueueError(file, errorCode, message) {
 function fileDialogComplete(numFilesSelected, numFilesQueued) {
 	try {
 		if (numFilesSelected > 0) {
-            fUload.setStats(this.customSettings.totalTarget, numFilesQueued);
+		    document.getElementById(this.customSettings.progressTarget).style.backgroundColor = "orange";
+            fUload.setStats(numFilesQueued);
+			fUload.setStatus(this.customSettings.totalTarget, fUload.num_imgs);
+			document.getElementById(this.customSettings.cancelButtonId).disabled = false;
 		}
 		
 		/* I want auto start the upload and I can do that here */
@@ -100,8 +96,7 @@ function uploadStart(file) {
 		It's important to update the UI here because in Linux no uploadProgress events are called. The best
 		we can do is say we are uploading.
 		 */
-		fUload.setStatus(this.customSettings.statusTarget, file.name);
-		document.getElementById(this.customSettings.singleFileProgressTarget).style.width =  "1%";
+		fUload.setStatus(this.customSettings.statusTarget, file.name + ' loading...');
 	}
 	catch (ex) {}
 	
@@ -110,8 +105,12 @@ function uploadStart(file) {
 
 function uploadProgress(file, bytesLoaded, bytesTotal) {
 	try {
-		var percent = Math.ceil((bytesLoaded / bytesTotal) * 100),
-		document.getElementById(this.customSettings.singleFileProgressTarget).style.width =  percent + "%";
+	    jQuery.noConflict();
+	    var stats = this.getStats(), percent = Math.floor(((1 / fUload.num_imgs) * (bytesLoaded / bytesTotal)) * 100),
+		    oldpercent = Math.ceil((stats.successful_uploads / fUload.num_imgs) * 100), c;
+			
+		var c = oldpercent + percent ;
+		jQuery("#" + this.customSettings.mainTarget).animate({width: c + "%"});
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -119,9 +118,15 @@ function uploadProgress(file, bytesLoaded, bytesTotal) {
 
 function uploadSuccess(file, serverData) {
 	try {
+	    jQuery.noConflict();
+	    var stats = this.getStats(),
+		    percent = Math.ceil((stats.successful_uploads / fUload.num_imgs) * 100);
+		
 	    fUload.loaded = fUload.loaded += 1;
+		
+		fUload.setStatus(this.customSettings.loadedTarget, stats.successful_uploads);
 		fUload.setStatus(this.customSettings.statusTarget, "");
-		document.getElementById(this.customSettings.singleFileProgressTarget).style.width =  "0%";
+		jQuery("#" + this.customSettings.mainTarget).animate({width: percent + "%"});
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -176,12 +181,14 @@ function uploadError(file, errorCode, message) {
 
 function uploadComplete(file) {
 	if (this.getStats().files_queued === 0) {
+	    jQuery.noConflict();
+		
 		document.getElementById(this.customSettings.cancelButtonId).disabled = true;
+		jQuery("#" + this.customSettings.mainTarget).animate({width: "100%"});
 	}
 }
 
 // This event comes from the Queue Plugin
 function queueComplete(numFilesUploaded) {
-	var status = document.getElementById("divStatus");
-	status.innerHTML = numFilesUploaded + " file" + (numFilesUploaded === 1 ? "" : "s") + " uploaded.";
+	document.getElementById(this.customSettings.statusTarget).innerHTML = " File upload complete.";
 }

@@ -1,26 +1,59 @@
-/* Demo Note:  This demo uses a FileProgress class that handles the UI for displaying the file name and percent complete.
-The FileProgress class is not part of SWFUpload.
-*/
+function getCookie(name) {
+	var start = document.cookie.indexOf(name + "="), len, end;
+	
+	len = start + name.length + 1;
+	
+	if (( !start ) && ( name != document.cookie.substring(0, name.length))) {
+		return null;
+	}
+	if ( start == -1 ) {
+	    return null;
+	}
+	
+	end = document.cookie.indexOf( ';', len );
+	
+	if ( end == -1 ) {
+	    end = document.cookie.length;
+	}
+	
+	return unescape(document.cookie.substring(len, end));
+}
 
+function setCookie(name, value, expires, path, domain, secure) {
+	var today = new Date();
+	today.setTime( today.getTime() );
+	if ( expires ) {
+		expires = expires * 1000 * 60 * 60 * 24;
+	}
+	var expires_date = new Date( today.getTime() + (expires) );
+	document.cookie = name+'='+escape( value ) +
+		( ( expires ) ? ';expires='+expires_date.toGMTString() : '' ) + //expires.toGMTString()
+		( ( path ) ? ';path=' + path : '' ) +
+		( ( domain ) ? ';domain=' + domain : '' ) +
+		( ( secure ) ? ';secure' : '' );
+}
 
-/* **********************
+function deleteCookie( name, path, domain ) {
+	if ( getCookie( name ) ) document.cookie = name + '=' +
+			( ( path ) ? ';path=' + path : '') +
+			( ( domain ) ? ';domain=' + domain : '' ) +
+			';expires=Thu, 01-Jan-1970 00:00:01 GMT';
+}
+/* 
+**********************
    Q's notes
    Event Handlers
-   These are my custom event handlers to make my
-   web application behave the way I went when SWFUpload
-   completes different tasks.  These aren't part of the SWFUpload
-   package.  They are part of my application.  Without these none
-   of the actions SWFUpload makes will show up in my application.
-   ********************** */
-   
+********************** 
+*/
+
+jQuery.noConflict();
+  
 var FILEObject = {
     totalImages: 0,
 	
-	loadedImages: 0,
+	loadedFiles: 0,
 	
-	queuedImages: 0,
-	
-	brokenImages: 0,	
+	queuedFiles: 0,
 	
 	limit: 0,
 	
@@ -40,7 +73,7 @@ var FILEObject = {
 
 function fileQueued(file) {
 	try {
-		FILEObject.queuedImages = FILEObject.queuedImages += 1;
+		FILEObject.queuedFiles = FILEObject.queuedFiles += 1;
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -51,7 +84,7 @@ function fileQueued(file) {
 function fileQueueError(file, errorCode, message) {
 	try {
 		if (errorCode === SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED) {
-			alert("You have attempted to queue too many files.\n" + (message === 0 ? "You have reached the upload limit." : "You may select " + (message > 1 ? "up to " + message + " files." : "one file.")));
+			alert("You have attempted to queue too many files.\n Upload limit exceeded.");
 			return;
 		}
 
@@ -100,11 +133,6 @@ function fileDialogComplete(numFilesSelected, numFilesQueued) {
 
 function uploadStart(file) {
 	try {
-		/* I don't want to do any file validation or anything,  I'll just update the UI and
-		return true to indicate that the upload should start.
-		It's important to update the UI here because in Linux no uploadProgress events are called. The best
-		we can do is say we are uploading.
-		 */
 		FILEObject.printStatus(this.customSettings.statusTarget, file.name + ' loading...');
 	}
 	catch (ex) {}
@@ -115,12 +143,14 @@ function uploadStart(file) {
 
 function uploadProgress(file, bytesLoaded, bytesTotal) {
 	try {
-	    jQuery.noConflict();
-	    var stats = this.getStats(), percent = Math.floor(((1 / FILEObject.totalImages) * (bytesLoaded / bytesTotal)) * 100),
-		    oldpercent = Math.ceil((stats.successful_uploads / FILEObject.totalImages) * 100), c;
+	    var stats = this.getStats(), currentfileprogress, allfilesprogress, totalprogress; 
+		
+		currentfileprogress = Math.floor(((1 / FILEObject.totalImages) * (bytesLoaded / bytesTotal)) * 100);    
+		allfilesprogress = Math.ceil((stats.successful_uploads / FILEObject.totalImages) * 100);
 			
-		var c = oldpercent + percent ;
-		jQuery("#" + this.customSettings.mainTarget).animate({width: c + "%"});
+		totalprogress = allfilesprogress + currentfileprogress;
+		
+		jQuery("#" + this.customSettings.mainTarget).animate({width: totalprogress + "%"});
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -129,15 +159,15 @@ function uploadProgress(file, bytesLoaded, bytesTotal) {
 
 function uploadSuccess(file, serverData) {
 	try {
-	    jQuery.noConflict();
-	    var stats = this.getStats(),
-		    percent = Math.ceil((stats.successful_uploads / FILEObject.totalImages) * 100);
+	    var stats = this.getStats(), progress;
 		
-	    FILEObject.loadedImages = FILEObject.loadedImages += 1;
+		progress = Math.ceil((stats.successful_uploads / FILEObject.totalImages) * 100);
+		
+	    FILEObject.loadedFiles = FILEObject.loadedFiles += 1;
 		
 		FILEObject.printStatus(this.customSettings.loadedTarget, stats.successful_uploads);
 		FILEObject.printStatus(this.customSettings.statusTarget, "");
-		jQuery("#" + this.customSettings.mainTarget).animate({width: percent + "%"});
+		jQuery("#" + this.customSettings.mainTarget).animate({width: progress + "%"});
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -194,15 +224,24 @@ function uploadError(file, errorCode, message) {
 
 function uploadComplete(file) {
 	if (this.getStats().files_queued === 0) {
-	    jQuery.noConflict();
-		
-		document.getElementById(this.customSettings.cancelButtonId).disabled = true;
-		jQuery("#" + this.customSettings.mainTarget).animate({width: "100%"});
+		document.getElementById(this.customSettings.cancelButtonId).disabled = true;		
 	}
 }
 
 
 // This event comes from the Queue Plugin
 function queueComplete(numFilesUploaded) {
+    var uploads, mycookie;
+	
+	if (this.customSettings.cookie === "img_count") 
+	    imgcookie = getCookie("img_count");
+	else 
+	    mycookie = getCookie("video_count");
+	
+	if (mycookie) 
+	    uploads = FILEObject.loadedFiles + mycookie;
+	
+    jQuery("#" + this.customSettings.mainTarget).animate({width: "100%"});
+	setCookie(this.customSettings.cookie, uploads);
 	document.getElementById(this.customSettings.statusTarget).innerHTML = " File upload complete.";
 }

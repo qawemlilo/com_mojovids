@@ -8,6 +8,7 @@ $host = JURI::root();
 
 $document->addStyleSheet('components/com_mojovids/css/style.css');
 $document->addStyleSheet('components/com_mojovids/swfupload/default.css');
+$document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.queue.js');
 $document->addScript('components/com_mojovids/swfupload/handlers.js');
@@ -27,7 +28,7 @@ $document->addStyleDeclaration($style);
 $userfolder = $session->get('clientfolder');
 ?>
 <script type="text/javascript">
-		var swfu;
+		var swfu, limit, mycookie = getCookie("img_count");
 		
 		window.onload = function() {
 			var settings = {
@@ -41,7 +42,7 @@ $userfolder = $session->get('clientfolder');
 				file_size_limit : "1 MB",  //size limit per file
 				file_types : "*.png;*.jpg;*jpeg;*.gif", // acceptable file extensions
 				file_types_description : "Image files only", //discription message
-				file_upload_limit : 5, //number of files to be uploaded
+				file_upload_limit : 5, //<?php echo $limit; ?> number of files to be uploaded
 				file_queue_limit : 0, //number of files uploaded per time
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
@@ -49,7 +50,8 @@ $userfolder = $session->get('clientfolder');
 					statusTarget: "sTarget",
 					cancelButtonId : "btnCancel",
 					totalTarget: "tTarget",
-					loadedTarget: "loaded"
+					loadedTarget: "loaded",
+					cookie: "img_count" 
 				},
 				debug: false,
 
@@ -77,6 +79,17 @@ $userfolder = $session->get('clientfolder');
 				upload_complete_handler : uploadComplete,
 				queue_complete_handler : queueComplete	// Queue plugin event
 			};
+			
+			if (mycookie !== null) {
+			    if (mycookie >= settings.file_upload_limit) {
+				  alert("You have reached your photo upload limit.\n Proceed.");
+				  location.href = "index.php?option=com_mojovids&view=stepfour";
+				}
+				else {
+			        limit = settings.file_upload_limit - mycookie;
+					settings.file_upload_limit = limit;
+				}
+			}
 
 			swfu = new SWFUpload(settings);
 		};

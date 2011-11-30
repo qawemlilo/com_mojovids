@@ -11,11 +11,11 @@ class MojovidsViewStepthree extends JView
 {
 	function display($tpl = null)
 	{
+	    $session =& JFactory::getSession();
+		
         if(isset($_POST['import'])) 
-		{
-		    $session =& JFactory::getSession();
+		{   
 			$session->set('stepthreecomplete', true);
-			
             header("Location: index.php?option=com_mojovids&view=stepfour");
         }		
 		else 

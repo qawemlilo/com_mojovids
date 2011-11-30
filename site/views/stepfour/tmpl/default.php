@@ -1,7 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-
 if($this->msg == "default") {
 $session = &JFactory::getSession();
 $document = &JFactory::getDocument();
@@ -10,10 +9,10 @@ $host = JURI::root();
 $document->addStyleSheet('components/com_mojovids/css/style.css');
 $document->addStyleSheet('components/com_mojovids/swfupload/default.css');
 $document->addStyleSheet('components/com_mojovids/js/tooltips/tipTip.css');
+$document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.queue.js');
 $document->addScript('components/com_mojovids/swfupload/handlers.js');
-$document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
 $document->addScript('components/com_mojovids/js/tooltips/jquery.tipTip.js');
 
 $userfolder = $session->get('clientfolder');
@@ -29,6 +28,7 @@ $style = '
      opacity: 0.0;
 	 z-index: 1;
   }';
+  
 //Add some custom styles
 $document->addStyleDeclaration($style); 
 
@@ -59,7 +59,7 @@ $(document).ready(function(){
 $document->addScriptDeclaration($scrit);
 ?>
 <script type="text/javascript">
-		var swfu;
+		var swfu, limit, mycookie = getCookie("video_count");
 		
 		window.onload = function() 
 		{
@@ -67,10 +67,10 @@ $document->addScriptDeclaration($scrit);
 				flash_url : "<?php echo $host . 'components/com_mojovids/swfupload/swfupload.swf';?>",
 				upload_url: "<?php echo $host . 'components/com_mojovids/swfupload/upload.php'; ?>",
 				post_params: {"PHPSESSID" : "<?php echo $session->getId(); ?>", "userfolder":"<?php echo $userfolder; ?>", "host": "<?php echo $host; ?>"},
-				file_size_limit : "50 MB",
-				file_types : "*.mp3;*.mp4;*.wav;*mpeg;*.wmv;*.avi;*.flv;*.wmv",
+				file_size_limit : "10 MB",
+				file_types : "*.mp4;*.wav;*mpeg;*.wmv;*.avi;*.flv;*.wmv",
 				file_types_description : "All Files",
-				file_upload_limit : 0,
+				file_upload_limit : 5,
 				file_queue_limit : 0,
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
@@ -78,7 +78,8 @@ $document->addScriptDeclaration($scrit);
 					statusTarget: "sTarget",
 					cancelButtonId : "btnCancel",
 					totalTarget: "tTarget",
-					loadedTarget: "loaded"
+					loadedTarget: "loaded",
+					cookie: "video_count"
 				},
 				debug: false,
 
@@ -107,6 +108,17 @@ $document->addScriptDeclaration($scrit);
 				queue_complete_handler : queueComplete	// Queue plugin event
 			};
 
+			if (mycookie !== null) {
+			    if (mycookie >= settings.file_upload_limit) {
+				  alert("You have reached your upload limit.\n Please proceed to payment.");
+				  return false;
+				}
+				else {
+			        limit = settings.file_upload_limit - mycookie;
+					settings.file_upload_limit = limit;
+				}
+			}
+			
 			swfu = new SWFUpload(settings);
 		};
 </script>
@@ -165,7 +177,46 @@ $document->addScriptDeclaration($scrit);
 }
 elseif($this->msg == "success")
 {
-    echo '<h2 style="color:green">Success! (Demo: user will hereby be redirected to paypal)</h2>';          
+?>
+<h2>Go to payment</h2>
+<div id="content">
+      <table id="prices">
+		  <thead style="background-color: #76AE29">
+            <tr>
+ 			  <th class="first" style="width: 35%">Package</th>
+              <th class="slick" style="width: 40%">Description</th>
+              <th class="sexy" style="width: 25%">Total</th>
+		    </tr>
+		  </thead>
+		  
+		  <tbody>
+            <tr>
+ 			  <td class="optitem"><?php echo $session->get("clientpackage"); ?></td>
+              <td class="slick"><?php echo $session->get("clientpackage"); ?> package.</td>
+              <td class="sexy"><strong><?php if($session->get("clientpackage") == "economy") echo '79'; if($session->get("clientpackage") == "premium") echo '99';?></strong></td>
+		    </tr>
+		  </tbody>
+	
+		  <tfoot>
+            <tr>			  
+ 			  <td> &nbsp; </td>
+              <td class="chooseslick"> &nbsp; </td>
+              <td class="choosesexy">
+                <form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				  <input type="hidden" name="cmd" value="_xclick">
+				  <input type="hidden" name="business" value="me@mybiz.com">
+				  <input type="hidden" name="notify_url" value="http://www.scottwebdesigns.co.za/mojo/">
+				  <input type="hidden" name="currency_code" value="USD">
+				  <input type="hidden" name="item_name" value="<?php echo $session->get("clientpackage"); ?>">
+				  <input type="hidden" name="amount" value="<?php if($session->get("clientpackage") == "economy") echo '79'; if($session->get("clientpackage") == "premium") echo '99';?>">
+				  <input type="submit" name="submit" class="button green" Value="Pay Now" >
+				</form>         			  
+			  </td>			  
+		    </tr>
+		  </tfoot>
+      </table>
+</div>
+<?php	
 }
 elseif($this->msg == "fail")
 {

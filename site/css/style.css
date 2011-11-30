@@ -116,8 +116,9 @@
 }
 
 #contactForm textarea {
-    padding: 7px;
-	width: 450px;
+    padding: 4px;
+	width: 308px;
+	height: 150px;
 	border: 1px solid #BBBBBB;
 	-moz-border-radius: 4px 4px 4px 4px;
 }

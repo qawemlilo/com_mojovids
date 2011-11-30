@@ -150,7 +150,7 @@ class MojovidsViewSteptwo extends JView
 			$formOk = $form->processForm();
 			
 			if($formOk) {
-			    $session->set('steptwocomplete', true);
+			    $session->set('steptwocomplete', true);		
 			    header("Location: index.php?option=com_mojovids&view=stepthree");
 			}
 		}

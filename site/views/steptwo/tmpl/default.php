@@ -57,10 +57,13 @@ else
 	    <label for="email">Email <span class="req">*</span></label>
 		<input type="text" class="txt<?php if(isset($errors['email'])) echo ' error'; ?>" size="22" value="<?php if($session->has('clientemail')) echo $session->get('clientemail'); ?>" name="email" />
 	  </p>
-	  
 	  <p>
+	    <label for="terms">&nbsp;</label>
+		<textarea tabindex="4" readonly="readonly" rows="10" cols="40" id="terms">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</textarea>
+	  </p>	  
+	  <p  style="margin-top:-10px;">
 	    <label for="conditions">&nbsp;</label>
-		<input type="checkbox" id="conditions" value="1" name="conditions" /> Terms and Conditions <span class="req">*</span>
+		<input type="checkbox" id="conditions" value="1" name="conditions" /> Accept Terms and Conditions <span class="req">*</span>
 	  </p>
 	  
 	  <p>

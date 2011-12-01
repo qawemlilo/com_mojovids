@@ -1,12 +1,17 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
-if($this->msg == "default") {
 $session = &JFactory::getSession();
 $document = &JFactory::getDocument();
-$host = JURI::root();
+
 
 $document->addStyleSheet('components/com_mojovids/css/style.css');
+$document->addScript('components/com_mojovids/js/cookies.js');
+
+if($this->msg == "default") 
+{
+$host = JURI::root();
+
 $document->addStyleSheet('components/com_mojovids/swfupload/default.css');
 $document->addStyleSheet('components/com_mojovids/js/tooltips/tipTip.css');
 $document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
@@ -67,10 +72,10 @@ $document->addScriptDeclaration($scrit);
 				flash_url : "<?php echo $host . 'components/com_mojovids/swfupload/swfupload.swf';?>",
 				upload_url: "<?php echo $host . 'components/com_mojovids/swfupload/upload.php'; ?>",
 				post_params: {"PHPSESSID" : "<?php echo $session->getId(); ?>", "userfolder":"<?php echo $userfolder; ?>", "host": "<?php echo $host; ?>"},
-				file_size_limit : "10 MB",
-				file_types : "*.mp4;*.wav;*mpeg;*.wmv;*.avi;*.flv;*.wmv",
+				file_size_limit : "20 MB",
+				file_types : "*.mp4;*.avi;*.mov;*.qt;*.3gp;*.m4v;*.mpg;*.mpeg;*.mp4v;*.h264;*.wmv,;*.mpg4;*.movie;*.m4u;*.flv;*.dv;*.mkv;*.mjpeg;*.ogv",
 				file_types_description : "All Files",
-				file_upload_limit : 5,
+				file_upload_limit : 10,
 				file_queue_limit : 0,
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
@@ -169,47 +174,56 @@ $document->addScriptDeclaration($scrit);
 	
        <div style="height:2px; width: 100%; clear: left;"> &nbsp; </div>	
         <input type="hidden" value="1" name="import"> 	   
-        <button type="submit" value="submit" class="button green" id="submit" name="submit"><strong>Paypal Payment >></strong></button>
+        <button type="submit" value="submit" class="button green" id="submit" name="submit"><strong>Submit</strong></button>
 	    </fieldset>
 	</form>
 </div>
 <?php
 }
-elseif($this->msg == "success")
+elseif($this->msg == "success" && $session->get("clientpackage"))
 {
+$scrit = '
+deleteCookie("img_count");
+deleteCookie("video_count");
+';
+
+$document->addScriptDeclaration($scrit);
 ?>
-<h2>Go to payment</h2>
+<h2>Go to Paypal&reg; for payment</h2>
+<p>
+This page will redirect you to Paypal<sup>&reg;</sup> for secure payment.
+</p>
 <div id="content">
       <table id="prices">
-		  <thead style="background-color: #76AE29">
+		  <thead>
             <tr>
- 			  <th class="first" style="width: 35%">Package</th>
-              <th class="slick" style="width: 40%">Description</th>
-              <th class="sexy" style="width: 25%">Total</th>
+ 			  <th class="first" style="width: 35%; background-color: #76AE29; padding: 5px">Package</th>
+              <th class="slick" style="width: 40%; background-color: #76AE29; padding: 5px">Description</th>
+              <th class="sexy" style="width: 25%; background-color: #76AE29; padding: 5px">Total</th>
 		    </tr>
 		  </thead>
 		  
 		  <tbody>
             <tr>
- 			  <td class="optitem"><?php echo $session->get("clientpackage"); ?></td>
-              <td class="slick"><?php echo $session->get("clientpackage"); ?> package.</td>
-              <td class="sexy"><strong><?php if($session->get("clientpackage") == "economy") echo '79'; if($session->get("clientpackage") == "premium") echo '99';?></strong></td>
+ 			  <td class="optitem" style="#fff; padding: 2px; background-color: #fff; text-align:center"><?php echo ucfirst($session->get("clientpackage")); ?></td>
+              <td class="slick" style="#fff; padding: 2px"><?php echo ucfirst($session->get("clientpackage")); ?> Package.</td>
+              <td class="sexy" style="padding: 2px">$<?php if($session->get("clientpackage") == "economy") echo '79'; if($session->get("clientpackage") == "premium") echo '99';?></td>
 		    </tr>
 		  </tbody>
 	
 		  <tfoot>
             <tr>			  
- 			  <td> &nbsp; </td>
+ 			  <td> <img src="components/com_mojovids/images/btn_paynow_LG.gif" /> </td>
               <td class="chooseslick"> &nbsp; </td>
               <td class="choosesexy">
                 <form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
 				  <input type="hidden" name="cmd" value="_xclick">
-				  <input type="hidden" name="business" value="me@mybiz.com">
+				  <input type="hidden" name="business" value="Mojo_Vids@mojovids.co.za">
 				  <input type="hidden" name="notify_url" value="http://www.scottwebdesigns.co.za/mojo/">
 				  <input type="hidden" name="currency_code" value="USD">
-				  <input type="hidden" name="item_name" value="<?php echo $session->get("clientpackage"); ?>">
+				  <input type="hidden" name="item_name" value="<?php echo ucfirst($session->get("clientpackage")); ?> Package">
 				  <input type="hidden" name="amount" value="<?php if($session->get("clientpackage") == "economy") echo '79'; if($session->get("clientpackage") == "premium") echo '99';?>">
-				  <input type="submit" name="submit" class="button green" Value="Pay Now" >
+				  <input type="image" name="submit"src="components/com_mojovids/images/btn_paynowCC_LG.gif" />
 				</form>         			  
 			  </td>			  
 		    </tr>
@@ -217,12 +231,23 @@ elseif($this->msg == "success")
       </table>
 </div>
 <?php	
+$session->destroy();
 }
 elseif($this->msg == "fail")
 {
-    echo '<h2 style="color:red">Error occured: (Demo failure)</h2>';    
+$scrit = '
+deleteCookie("img_count");
+deleteCookie("video_count");
+';
+
+$document->addScriptDeclaration($scrit);
+$session->destroy();
+?>
+    <h2 style="color:red">Error occured!</h2>
+    <p style="color:red">An unexpected error occured, <a href="index.php?option=com_mojovids&view=stepone">Click here to try again</a>.</p>    
+<?php
 }
 else {
-    header("Location: index.php");
+    header("Location: index.php?option=com_mojovids&view=stepone");
 }
 ?>

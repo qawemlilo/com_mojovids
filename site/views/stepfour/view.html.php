@@ -35,7 +35,7 @@ class appForm {
 			$body = "NEW ORDER FROM WEBSITE";
             $body .= "\n---------------------------------------------------";			
             $body .= "\n Name: " . $name;	
-            $body .= "\n Username: " . $surname;	
+            $body .= "\n Surname: " . $surname;	
 			$body .= "\n Email: " . $email;
 			$body .= "\n Package: " . $package;
 			$body .= "\n Title: " . $title;
@@ -52,7 +52,7 @@ class appForm {
 			
 			if($savedOk) 
 			{
-			    $this->sendMail("auto-responder@mojo.co.za", $scott, "New order from website", $body);
+			    $this->sendMail("auto-responder@mojo.co.za", $qawe, "New order from website", $body);
 				
 				return true;
 			}
@@ -106,9 +106,8 @@ class MojovidsViewStepfour extends JView
 			
 			if($formOk) 
 			{
-			    $session->destroy();
 				$msg = "success";
-			    $this->assignRef( 'msg', $msg);
+			    $this->assignRef('msg', $msg);
 			}
 			else
 			{

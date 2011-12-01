@@ -11,6 +11,7 @@ $document->addStyleSheet('components/com_mojovids/swfupload/default.css');
 $document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.queue.js');
+$document->addScript('components/com_mojovids/js/cookies.js');
 $document->addScript('components/com_mojovids/swfupload/handlers.js');
 
 $style = '	
@@ -39,8 +40,8 @@ $userfolder = $session->get('clientfolder');
 					"userfolder": "<?php echo $userfolder; ?>", 
 					"host": "<?php echo $host; ?>"
 				},
-				file_size_limit : "1 MB",  //size limit per file
-				file_types : "*.png;*.jpg;*jpeg;*.gif", // acceptable file extensions
+				file_size_limit : "2 MB",  //size limit per file
+				file_types : "*.png;*.jpg;*jpeg;*.gif;*.tiff", // acceptable file extensions
 				file_types_description : "Image files only", //discription message
 				file_upload_limit : 5, //<?php echo $limit; ?> number of files to be uploaded
 				file_queue_limit : 0, //number of files uploaded per time

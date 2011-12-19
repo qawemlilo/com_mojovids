@@ -42,7 +42,7 @@ $document->addStyleDeclaration($style);
 $scrit = 'jQuery.noConflict();' . "\n";
 $scrit .= '(function($) {
 $(document).ready(function(){
-    $(".someClass").tipTip({maxWidth: "250px", delay: 200, defaultPosition: "top", edgeOffset: 10}); 
+    $(".someClass").tipTip({maxWidth: "250px", delay: 200, defaultPosition: "top", edgeOffset: 10, keepAlive: true}); 
 
     $("#musictwo").click(function(){
 	    ($("#music").attr("disabled")) ? $("#music").removeAttr("disabled") : $("#music").attr("disabled", "disabled");
@@ -74,8 +74,8 @@ $document->addScriptDeclaration($scrit);
 				post_params: {"PHPSESSID" : "<?php echo $session->getId(); ?>", "userfolder":"<?php echo $userfolder; ?>", "host": "<?php echo $host; ?>"},
 				file_size_limit : "20 MB",
 				file_types : "*.mp4;*.avi;*.mov;*.qt;*.3gp;*.m4v;*.mpg;*.mpeg;*.mp4v;*.h264;*.wmv,;*.mpg4;*.movie;*.m4u;*.flv;*.dv;*.mkv;*.mjpeg;*.ogv",
-				file_types_description : "All Files",
-				file_upload_limit : 10,
+				file_types_description : "Video Clips",
+				file_upload_limit : 3,
 				file_queue_limit : 0,
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
@@ -207,7 +207,7 @@ This page will redirect you to Paypal<sup>&reg;</sup> for secure payment.
             <tr>
  			  <td class="optitem" style="#fff; padding: 2px; background-color: #fff; text-align:center"><?php echo ucfirst($session->get("clientpackage")); ?></td>
               <td class="slick" style="#fff; padding: 2px"><?php echo ucfirst($session->get("clientpackage")); ?> Package.</td>
-              <td class="sexy" style="padding: 2px">$<?php if($session->get("clientpackage") == "economy") echo '79'; if($session->get("clientpackage") == "premium") echo '99';?></td>
+              <td class="sexy" style="padding: 2px">$<?php if($session->get("clientpackage") == "economy") echo '1'; if($session->get("clientpackage") == "premium") echo '99';?></td>
 		    </tr>
 		  </tbody>
 	
@@ -218,11 +218,11 @@ This page will redirect you to Paypal<sup>&reg;</sup> for secure payment.
               <td class="choosesexy">
                 <form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
 				  <input type="hidden" name="cmd" value="_xclick">
-				  <input type="hidden" name="business" value="Mojo_Vids@mojovids.co.za">
-				  <input type="hidden" name="notify_url" value="http://www.scottwebdesigns.co.za/mojo/">
+				  <input type="hidden" name="business" value="burnsie1402@gmail.com">
+				  <input type="hidden" name="notify_url" value="http://www.scottwebdesigns.co.za/mojo/index.php?option=com_mojovids&view=thankyou">
 				  <input type="hidden" name="currency_code" value="USD">
 				  <input type="hidden" name="item_name" value="<?php echo ucfirst($session->get("clientpackage")); ?> Package">
-				  <input type="hidden" name="amount" value="<?php if($session->get("clientpackage") == "economy") echo '79'; if($session->get("clientpackage") == "premium") echo '99';?>">
+				  <input type="hidden" name="amount" value="<?php if($session->get("clientpackage") == "economy") echo '1'; if($session->get("clientpackage") == "premium") echo '99';?>">
 				  <input type="image" name="submit"src="components/com_mojovids/images/btn_paynowCC_LG.gif" />
 				</form>         			  
 			  </td>			  

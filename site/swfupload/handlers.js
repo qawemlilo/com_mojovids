@@ -50,6 +50,7 @@ function fileQueueError(file, errorCode, message) {
 		switch (errorCode) {
 		case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
 			FILEObject.printStatus(this.customSettings.statusTarget, "File is too big.");
+			alert(file.name + " is too big, please compress the file before uploading it.");
 			this.debug("Error Code: File too big, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
 			break;
 		case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
@@ -118,15 +119,7 @@ function uploadProgress(file, bytesLoaded, bytesTotal) {
 
 function uploadSuccess(file, serverData) {
 	try {
-	    var stats = this.getStats(), progress;
-		
-		progress = Math.ceil((stats.successful_uploads / FILEObject.totalImages) * 100);
-		
-	    FILEObject.loadedFiles = FILEObject.loadedFiles += 1;
-		
-		FILEObject.printStatus(this.customSettings.loadedTarget, stats.successful_uploads);
 		FILEObject.printStatus(this.customSettings.statusTarget, "");
-		jQuery("#" + this.customSettings.mainTarget).animate({width: progress + "%"});
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -182,7 +175,16 @@ function uploadError(file, errorCode, message) {
 
 
 function uploadComplete(file) {
-	if (this.getStats().files_queued === 0) {
+	var stats = this.getStats(), progress;
+	
+	progress = Math.ceil((stats.successful_uploads / FILEObject.totalImages) * 100);
+		
+	FILEObject.loadedFiles = FILEObject.loadedFiles += 1;
+	FILEObject.printStatus(this.customSettings.loadedTarget, stats.successful_uploads);
+	
+	jQuery("#" + this.customSettings.mainTarget).animate({width: progress + "%"});
+		
+	if (stats.files_queued === 0) {
 		document.getElementById(this.customSettings.cancelButtonId).disabled = true;		
 	}
 }
@@ -190,15 +192,19 @@ function uploadComplete(file) {
 
 // This event comes from the Queue Plugin
 function queueComplete(numFilesUploaded) {
-    var uploads, mycookie;
+    var uploads = numFilesUploaded, mycookie;
 	
-	if (this.customSettings.cookie === "img_count") 
+	if (this.customSettings.cookie === "img_count") {
 	    imgcookie = getCookie("img_count");
-	else 
+	}
+	else {
 	    mycookie = getCookie("video_count");
+	}
 	
-	if (mycookie) 
-	    uploads = FILEObject.loadedFiles + mycookie;
+	if (mycookie) {
+        mycookie = parseInt(mycookie, 10);	
+	    uploads += mycookie;
+	}
 	
     jQuery("#" + this.customSettings.mainTarget).animate({width: "100%"});
 	setCookie(this.customSettings.cookie, uploads);

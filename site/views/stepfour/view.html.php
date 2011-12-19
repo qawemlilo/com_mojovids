@@ -52,7 +52,7 @@ class appForm {
 			
 			if($savedOk) 
 			{
-			    $this->sendMail("auto-responder@mojo.co.za", $qawe, "New order from website", $body);
+			    $this->sendMail("auto-responder@mojo.co.za", $scott, "New order from website", $body);
 				
 				return true;
 			}

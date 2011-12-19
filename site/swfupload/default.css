@@ -35,11 +35,11 @@ div.fieldset span.legend {
 }
 
 div.flash {
-	width: 385px;
+	width: 405px;
 	height:20px;
 	margin-bottom: 5px;
 	padding: 0px; 
-	border: 1px solid #7DD006;
+	border: 1px solid green;
 	overflow: hidden;
    -moz-border-radius: 4px 4px 4px 4px;
 }
@@ -77,7 +77,7 @@ label {
     margin-right: 10px;
     margin-top: 0;
     text-align: left;
-    width: 120px;
+    width: 140px;
 	font-size: 14px;
 	color: #525253;
 }

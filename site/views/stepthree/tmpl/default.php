@@ -8,7 +8,9 @@ $host = JURI::root();
 
 $document->addStyleSheet('components/com_mojovids/css/style.css');
 $document->addStyleSheet('components/com_mojovids/swfupload/default.css');
+$document->addStyleSheet('components/com_mojovids/js/tooltips/tipTip.css');
 $document->addScript('components/com_mojovids/js/jquery-1.6.2.min.js');
+$document->addScript('components/com_mojovids/js/tooltips/jquery.tipTip.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.js');
 $document->addScript('components/com_mojovids/swfupload/swfupload.queue.js');
 $document->addScript('components/com_mojovids/js/cookies.js');
@@ -24,8 +26,17 @@ $style = '
      opacity: 0.0;
 	 z-index: 1;
   }';
+  
+$scrit = 'jQuery.noConflict();' . "\n";
+$scrit .= '(function($) {
+$(document).ready(function(){
+   $(".someClass").tipTip({maxWidth: "250px", delay: 200, defaultPosition: "top", edgeOffset: 10, keepAlive: true});    
+});
+})(jQuery);';
 
+$document->addScriptDeclaration($scrit);
 $document->addStyleDeclaration($style);  
+
 $userfolder = $session->get('clientfolder');
 ?>
 <script type="text/javascript">
@@ -40,11 +51,11 @@ $userfolder = $session->get('clientfolder');
 					"userfolder": "<?php echo $userfolder; ?>", 
 					"host": "<?php echo $host; ?>"
 				},
-				file_size_limit : "2 MB",  //size limit per file
+				file_size_limit : "5 MB",  //size limit per file
 				file_types : "*.png;*.jpg;*jpeg;*.gif;*.tiff", // acceptable file extensions
 				file_types_description : "Image files only", //discription message
-				file_upload_limit : 5, //<?php echo $limit; ?> number of files to be uploaded
-				file_queue_limit : 0, //number of files uploaded per time
+				file_upload_limit : 250,
+				file_queue_limit : 0, 
 				custom_settings : {
 					progressTarget : "fsUploadProgress",
 					mainTarget : "mainTarget",
@@ -70,9 +81,9 @@ $userfolder = $session->get('clientfolder');
 				button_cursor : SWFUpload.CURSOR.HAND,
 				
 				// The event handler functions are defined in handlers.js
-				file_queued_handler : fileQueued,
-				file_queue_error_handler : fileQueueError,
 				file_dialog_complete_handler : fileDialogComplete,
+				file_queued_handler : fileQueued,
+				file_queue_error_handler : fileQueueError,	
 				upload_start_handler : uploadStart,
 				upload_progress_handler : uploadProgress,
 				upload_error_handler : uploadError,
@@ -83,8 +94,8 @@ $userfolder = $session->get('clientfolder');
 			
 			if (mycookie !== null) {
 			    if (mycookie >= settings.file_upload_limit) {
-				  alert("You have reached your photo upload limit.\n Proceed.");
-				  location.href = "index.php?option=com_mojovids&view=stepfour";
+				  alert("You have reached your photo upload limit.\n Please proceed.");
+				  return;
 				}
 				else {
 			        limit = settings.file_upload_limit - mycookie;
@@ -98,12 +109,13 @@ $userfolder = $session->get('clientfolder');
 
 
 <div id="content">
-	<h2>Step 3 - Photos</h2>
+	<h2>Step 2 - Photos</h2>
 	
 	<form id="form1" action="index.php?option=com_mojovids&view=stepthree" method="post" enctype="multipart/form-data">
 	  <fieldset>
 	    <legend>Upload Photos</legend>
 		   <p style="margin-top: 0px; padding-left: 0px;"><strong>Please Note:</strong> You can add multiple files at once, by holding down the shift button while selecting multiple items to be uploaded.</p>
+		    <p style="margin-top: 0px; padding-left: 0px;"><a href="#/imgsize" class="someClass" title="The size limit per photo is 5mb, however we highly recommend downsizing your images first to achieve a much shorter upload time. You could have a bunch of images that are each 1 to 5 mb in size. By using the below mentioned resizing programs you can reduce the size of your images dramatically by selecting the 1024 x 768 resolution without losing any image quality. Even if an image ends up at only 300kb, as long as the resolution is set to the above mentioned you will get the same quality as the images that are 1-5 mb in size. This size will be perfect quality for viewing online or on DVD. To downsize your images we recommend <a href='http://www.vso-software.fr/products/image_resizer/' target='_blank'>Light image resizer</a> for Windows users or <a href='http://www.versiontracker.com/dyn/moreinfo/macosx/23017&vid=140851%20' target='_blank'>Dropic</a> for Mac users as both are easy to use as well as free. Make sure to downsize your images to a size of no less than 1024 x 768 pixels. This size will be perfect for viewing online or on DVD.">Ideal image size</a></p>
 			<div style="margin-left: -2px; margin-top: 10px;">
 				<span id="spanButtonPlaceHolder"></span>
 				<input id="btnUpload" type="button" value="Upload" class="button green" style="font-weight:bold;  border-color:green" />

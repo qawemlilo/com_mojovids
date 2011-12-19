@@ -28,7 +28,7 @@ $document->addScriptDeclaration($scrit);
  			  <th class="first">Pricing options</th>
               <th class="slick">
 			   <img src="components/com_mojovids/images/economy-button.jpg" /> <br />  <br />
-                $79			   
+                $1			   
               </th>
               <th class="sexy">
 			   <img src="components/com_mojovids/images/premium-button.jpg" /> <br /> <br />  
@@ -51,7 +51,7 @@ $document->addScriptDeclaration($scrit);
 		    </tr>
 			
             <tr>
- 			  <td class="optitem">Up to 300 photos and 5 video clips <a href="#/moreinfo" class="someClass" title="Maximum photos- 300, maximum video clip length-30secs. Please bear in mind that a video clip of 10secs is the same as 3 photos,  20 secs is the same as 6 photos and 30 secs is the same as 10 photos. Eg:- 290 photos and 1 30sec video clip will give you a total of 300 photos. You may only have up to 5 video clips">more info</a></td>
+ 			  <td class="optitem">Up to 250 photos and 5 video clips <a href="#/moreinfo" class="someClass" title="Maximum photos- 250, maximum video clip length-30secs. Please bear in mind that a video clip of 10secs is the same as 3 photos,  20 secs is the same as 6 photos and 30 secs is the same as 10 photos. Eg:- 290 photos and 1 30sec video clip will give you a total of 250 photos. You may only have up to 5 video clips">more info</a></td>
               <td class="slick"> <img src="components/com_mojovids/images/yes_32.png" class="yes" /> </td>
               <td class="sexy"> <img src="components/com_mojovids/images/yes_32.png" class="yes" /> </td>
 		    </tr>
@@ -79,17 +79,6 @@ $document->addScriptDeclaration($scrit);
               <td class="slick"> <img src="components/com_mojovids/images/no_32.png" class="yes" /> </td>
               <td class="sexy"> <img src="components/com_mojovids/images/yes_32.png" class="yes" /> <span class="details"><br />(ISO files are 100% DVD ready and simply need to be burnt to disc)</span> </td>
 		    </tr>
-			<!--
-            <tr>
- 			  <td class="optitem">Branding/Advertising</td>
-              <td class="slick"> Mojovids watermark <br />
-                   <span class="details">(Our logo will appear in the corner of your slideshow)</span>
-			  </td>
-              <td class="sexy">  
-			      No branding/white label <br />
-				  <span class="details">(Your slideshow will not have any form of branding or advertising)</span>
-			  </td>
-		    </tr> -->
 		  </tbody>
 	
 		  <tfoot>

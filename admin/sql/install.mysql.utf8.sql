@@ -10,3 +10,14 @@ CREATE TABLE IF NOT EXISTS `#__mojo_orders` (
   `ts` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `#__price`;
+
+CREATE TABLE IF NOT EXISTS `#__price` (
+  `id` int(11) NOT NULL auto_increment,
+  `packages` varchar(25) NOT NULL,
+  `price` int(3) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+INSERT INTO `#__price` (`packages`, `price`) VALUES ('Economy', 79), ('Premium', 99);

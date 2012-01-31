@@ -42,8 +42,13 @@
 
 		<files folder="admin">
 			<filename>mojovids.php</filename>
+            <filename>controller.php</filename>
 			<filename>index.html</filename>
 			<folder>sql</folder>
+            <folder>controllers</folder>
+            <folder>models</folder>
+            <folder>views</folder>
+            <folder>tables</folder>
 		</files>  
 	</administration>
 </install>

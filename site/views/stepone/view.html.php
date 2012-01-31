@@ -9,9 +9,21 @@ jimport( 'joomla.application.component.view');
 **/
 
 class MojovidsViewStepone extends JView
-{
+{   
 	function display($tpl = null)
 	{
+        $session =& JFactory::getSession();
+        $model = &$this->getModel();
+        $data = $model->getData();
+        
+        if (count($data) > 0) 
+        {
+            foreach ($data as $package) 
+            {
+                $session->set($package['packages'], $package['price']);            
+            }
+        } 
+        
 		if (isset($_POST['import']))
 		{	            			
 		    if (isset($_POST['economy']) && !empty($_POST['economy']))
@@ -21,7 +33,8 @@ class MojovidsViewStepone extends JView
 			
 			header("Location: $url");		  
 		}
-		else
+		else {
 		    parent::display($tpl);
+        }
 	}
 }

@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-
+$session =& JFactory::getSession();
 $document = &JFactory::getDocument();
 $document->addStyleSheet('components/com_mojovids/css/style.css');  
 $document->addStyleSheet('components/com_mojovids/js/tooltips/tipTip.css');
@@ -28,11 +28,11 @@ $document->addScriptDeclaration($scrit);
  			  <th class="first">Pricing options</th>
               <th class="slick">
 			   <img src="components/com_mojovids/images/economy-button.jpg" /> <br />  <br />
-                $1			   
+                $<?php echo $session->get('Economy'); ?>			   
               </th>
               <th class="sexy">
 			   <img src="components/com_mojovids/images/premium-button.jpg" /> <br /> <br />  
-               $99			   
+               $<?php echo $session->get('Premium'); ?>				   
               </th>
 		    </tr>
 		  </thead>

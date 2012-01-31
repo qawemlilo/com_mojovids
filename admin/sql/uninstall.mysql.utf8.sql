@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS `#__mojo_orders`;
+DROP TABLE IF EXISTS `#__mojo_orders`, `#__price`;
